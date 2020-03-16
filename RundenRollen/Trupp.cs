@@ -45,7 +45,7 @@ namespace RundenRollen
         }
 
         /// <summary>
-        /// 
+        ///Greift Trupp an
         /// </summary>
         /// <param name="AngegriffenerTrupp"></param>
         public virtual void Attack(Trupp AngegriffenerTrupp)
