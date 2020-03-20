@@ -7,6 +7,49 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="ListBox" x:Key="UnitList">
+                <Setter Property="ItemContainerStyle">
+                    <Setter.Value>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Width" Value="100"/>
+                            <Setter Property="VerticalAlignment" Value="Stretch"/>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="ItemTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Stretch">
+                                <Grid Margin="5" VerticalAlignment="Stretch" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel>
+                                        <TextBlock Text="Name: "/>
+                                        <TextBlock Text="HP: "/>
+                                        <TextBlock Text="Moral: "/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding Name}"/>
+                                        <TextBlock Text="{Binding AnzahlEinheiten}"/>
+                                        <TextBlock Text="{Binding Moral}"/>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
@@ -16,49 +59,51 @@
         </Grid.ColumnDefinitions>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="93*"/>
-                <RowDefinition Height="264*"/>
-                <RowDefinition Height="77*"/>
+                <RowDefinition Height="100*"/>
+                <RowDefinition Height="228*"/>
+                <RowDefinition Height="100*"/>
             </Grid.RowDefinitions>
-            <ItemsControl ItemsSource="{Binding GegnerEinheiten}" Grid.Row="0">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border HorizontalAlignment="Stretch" Width="50" Background="Aqua">
-                            <TextBlock Text="{Binding Name}"/>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-
-            <ItemsControl ItemsSource="{Binding VerbündeteEinheiten}" Grid.Row="2" Margin="0,8,0,0">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border HorizontalAlignment="Stretch" Width="50" Background="Aqua">
-                            <TextBlock Text="{Binding Name}"/>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </Grid>
-        <Grid Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45*"/>
-                <ColumnDefinition Width="62*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="60*"/>
-                <RowDefinition Height="40*"/>
-                <RowDefinition Height="40*"/>
-                <RowDefinition Height="40*"/>
-                <RowDefinition Height="40*"/>
-                <RowDefinition Height="40*"/>
-                <RowDefinition Height="149*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Verbleibende Einheiten" Grid.Row="1" TextWrapping="Wrap" />
-            <Button HorizontalAlignment="Center" VerticalAlignment="Top" Height="34" Width="80" Click="Button_Click" Margin="0,86,0,0" Grid.Row="6" Grid.Column="1">
+            <ListBox ItemsSource="{Binding GegnerEinheiten}" SelectedItem="{Binding SelectedUnit}" Style="{StaticResource UnitList}" Grid.Row="0"/>
+            <ListBox ItemsSource="{Binding VerbündeteEinheiten}" SelectedItem="{Binding SelectedUnit}" Style="{StaticResource UnitList}" Grid.Row="2" Margin="0,11,0,0"/>
+            <Button HorizontalAlignment="Left" VerticalAlignment="Center" Height="34" Width="80" Click="Button_Click" Margin="80,0,0,0" Grid.Row="1">
                 <StackPanel/>
             </Button>
         </Grid>
+        <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black" Background="LightGray">
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="45*"/>
+                    <ColumnDefinition Width="62*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="81*"/>
+                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="30*"/>
+                    <RowDefinition Height="58*"/>
+                    <RowDefinition Height="65*"/>
+                    <RowDefinition Height="51*"/>
+                    <RowDefinition Height="35*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Anzahl" Grid.Row="1" TextWrapping="Wrap" />
+                <TextBlock Text="Moralwert" Grid.Row="2" TextWrapping="Wrap"  />
+                <TextBlock Text="Angriffswert" Grid.Row="3" TextWrapping="Wrap" />
+                <TextBlock Text="Breite" Grid.Row="4" TextWrapping="Wrap" />
+
+                <TextBlock Text="{Binding SelectedUnit.Name}"/>
+                <TextBlock Text="{Binding SelectedUnit.Grad}" Grid.Column="1"/>
+                <TextBlock Text="{Binding SelectedUnit.AnzahlEinheiten}"  Grid.Column="1" Grid.Row="1"/>
+                <TextBlock Text="{Binding SelectedUnit.Moral}" Grid.Row="2" Grid.Column="1" />
+                <TextBlock Text="{Binding SelectedUnit.AngriffsWert}" Grid.Row="3" Grid.Column="1"/>
+                <TextBlock Text="{Binding SelectedUnit.Breite}" Grid.Row="4" Grid.Column="1" />
+
+                <Button Grid.Row="6" Content="Magic" IsEnabled="{Binding Selectedunit.Magic}" Grid.ColumnSpan="2" Margin="0,65,111,0" Grid.RowSpan="2"/>
+                <Button Grid.Row="6" Grid.Column="1" Content="Zurückziehen" IsEnabled="{Binding Selectedunit.Fighting}" Margin="0,65,0,0" Grid.RowSpan="2"/>
+                <Button Grid.Row="7" Content="Extra Schaden" Grid.ColumnSpan="2" Margin="0,51,111,0" Grid.RowSpan="2" />
+                <Button Grid.Row="7" Grid.Column="1" Content="" Margin="0,51,0,0" Grid.RowSpan="2" />
+            </Grid>
+        </Border>
 
     </Grid>
 </Window>

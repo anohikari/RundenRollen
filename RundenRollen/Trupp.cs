@@ -9,6 +9,10 @@ namespace RundenRollen
         public Trupp(string name, int anzahlEinheiten, int grad, int moral, int breite)
         {
             Name = name;
+            AnzahlEinheiten = anzahlEinheiten;
+            Grad = grad;
+            Moral = moral;
+            Breite = breite;
         }
         public string Name { get; set; }
         public int AnzahlEinheiten { get; set; }
@@ -16,16 +20,16 @@ namespace RundenRollen
         public int Moral { get; set; }
         public int AngriffsWert { get; set; }
         public int[,] Einheiten { get; set; }
-        public int Breite = 0;
+        public int Breite { get; set; } = 0;
 
-        private bool Magic = false;
+        public bool Magic { get; set; } = true;
         public void UseMagic()
         {
-            Magic = true;
+            Magic = false;
             Moral--;
         }
         
-        public bool Geflohen = false;
+        public bool Fighting { get; set; } = true;
         public void MoralWerfen()
         {
             if ((Moral + Randomizer.GetWZwanzig()) >= 20)
@@ -35,17 +39,13 @@ namespace RundenRollen
             else
             {
                 Moral--;
-                Geflohen = true;
+                Fighting = false;
             }
         }
 
-        public void SortFormation()
-        {
-            Array.Sort(Einheiten);
-        }
 
         /// <summary>
-        ///Greift Trupp an
+        ///
         /// </summary>
         /// <param name="AngegriffenerTrupp"></param>
         public virtual void Attack(Trupp AngegriffenerTrupp)
@@ -76,6 +76,10 @@ namespace RundenRollen
                     }
                 }
             }
+        }
+        public void SortFormation()
+        {
+            Array.Sort(Einheiten);
         }
 
 
